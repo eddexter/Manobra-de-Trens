@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1541017767 source:c:\users\edgar\documents\ed1\trabalho2\edgartrab2\main.c
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	"base.h"
+
+1541016550 source:c:\users\edgar\documents\ed1\trabalho2\edgartrab2\base.c
+	<stdio.h>
+	<stdlib.h>
+	"base.h"
+
+1540927161 c:\users\edgar\documents\ed1\trabalho2\edgartrab2\base.h
+
