@@ -1,0 +1,52 @@
+name: Publicar no GitHub Pages
+
+# Roda os testes do motor e, se passarem, publica o site de Manobra2026/.
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'Manobra2026/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Um deploy por vez; um deploy em andamento não é cancelado.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  testar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Testes do motor
+        run: npm test
+        working-directory: Manobra2026
+
+  publicar:
+    needs: testar
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      # Publica só o que o navegador usa (sem testes, package.json nem CLAUDE.md).
+      - name: Montar o site
+        run: |
+          mkdir _site
+          cp -r Manobra2026/index.html Manobra2026/css Manobra2026/js _site/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
