@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manobra de Trens</title>
+  <meta name="description" content="Simulador visual, passo a passo, do rearranjo de vagões num pátio de manobra.">
+  <link rel="stylesheet" href="css/estilo.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <a class="pular" href="#patio-secao">Ir para o pátio</a>
+
+  <header class="topo">
+    <h1>Manobra de Trens</h1>
+    <p>Reordene os vagões de 1 a N usando trilhos de espera. Veja cada movimento, passo a passo.</p>
+  </header>
+
+  <main>
+    <section class="cartao" aria-labelledby="titulo-form">
+      <h2 id="titulo-form">Dados da simulação</h2>
+      <form id="formulario" novalidate>
+        <div class="campos">
+          <label>Vagões (N)
+            <input id="campo-n" type="number" inputmode="numeric" min="1" max="30" value="6">
+          </label>
+          <label class="largo">Sequência de chegada
+            <input id="campo-sequencia" type="text" inputmode="numeric" autocomplete="off" value="5 3 6 1 4 2"
+                   aria-describedby="ajuda-sequencia">
+          </label>
+          <label>Trilhos iniciais
+            <input id="campo-trilhos" type="number" inputmode="numeric" min="0" value="2">
+          </label>
+          <label>Capacidade por trilho
+            <input id="campo-capacidade" type="number" inputmode="numeric" min="1" value="3">
+          </label>
+          <label>Estratégia
+            <select id="campo-estrategia">
+              <option value="first-fit">First-fit (padrão)</option>
+              <option value="best-fit">Best-fit</option>
+            </select>
+          </label>
+        </div>
+        <p id="ajuda-sequencia" class="ajuda">Informe os números de 1 a N, sem repetir, separados por espaço. Máximo de 30 vagões.</p>
+
+        <div id="erros" class="erros" role="alert" hidden></div>
+
+        <div class="acoes">
+          <button type="submit" class="primario">Simular</button>
+          <span class="exemplos" role="group" aria-label="Exemplos prontos (usam o valor de N)">
+            <span class="exemplos-rotulo">Exemplos:</span>
+            <button type="button" data-exemplo="ordenada">Ordenada</button>
+            <button type="button" data-exemplo="inversa">Inversa (pior caso)</button>
+            <button type="button" data-exemplo="aleatoria">Aleatória</button>
+          </span>
+        </div>
+      </form>
+    </section>
+
+    <section id="patio-secao" class="cartao" aria-labelledby="titulo-patio">
+      <h2 id="titulo-patio">Pátio</h2>
+      <div id="patio" class="patio" tabindex="0" aria-label="Pátio de manobra (role para os lados em telas estreitas)"></div>
+
+      <div id="controles" class="controles" role="group" aria-label="Controles da simulação">
+        <div class="linha-botoes">
+          <button type="button" data-acao="inicio"><span aria-hidden="true">⏮</span> Início</button>
+          <button type="button" data-acao="anterior"><span aria-hidden="true">◀</span> Anterior</button>
+          <button type="button" data-acao="play" class="primario" aria-pressed="false">
+            <span data-icone aria-hidden="true">▶</span> <span data-rotulo>Reproduzir</span>
+          </button>
+          <button type="button" data-acao="proximo">Próximo <span aria-hidden="true">▶</span></button>
+          <button type="button" data-acao="fim">Ir ao fim <span aria-hidden="true">⏭</span></button>
+        </div>
+        <div class="linha-ajustes">
+          <label class="ajuste-passo">Passo
+            <input type="range" data-campo="passo" min="0" max="0" value="0">
+          </label>
+          <span class="contador" data-campo="contador">Sem simulação</span>
+          <label>Velocidade
+            <select data-campo="velocidade">
+              <option value="1800">Lenta</option>
+              <option value="1000" selected>Normal</option>
+              <option value="500">Rápida</option>
+              <option value="200">Muito rápida</option>
+            </select>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <div class="duas-colunas">
+      <section id="log" class="cartao" aria-labelledby="titulo-log">
+        <h2 id="titulo-log">Passos</h2>
+        <p class="log-atual" data-campo="atual" aria-live="polite"></p>
+        <ol class="log-lista" data-campo="lista"></ol>
+      </section>
+
+      <section id="resumo" class="cartao" aria-labelledby="titulo-resumo">
+        <h2 id="titulo-resumo">Resultado</h2>
+        <div class="resumo-resultado" data-campo="resultado" aria-live="polite"></div>
+        <button type="button" id="btn-comparar" disabled>Comparar estratégias</button>
+        <div class="comparacao" data-campo="comparacao" aria-live="polite"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="rodape">
+    Reescrita de um trabalho de Estrutura de Dados (UEZO, AV2), feito originalmente em C.
+  </footer>
+</body>
+</html>

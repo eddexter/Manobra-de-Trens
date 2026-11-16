@@ -1,0 +1,10 @@
+{
+  "name": "manobra-de-trens",
+  "version": "0.1.0",
+  "description": "Simulador visual passo a passo de manobra de trens (Estrutura de Dados, UEZO)",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "node --test"
+  }
+}
